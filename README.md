@@ -13,8 +13,8 @@ Grosso Joaquín, Santiago Orlando Luna, Ivo Giuliano Cappetto, Lautaro Gutierrez
 Contiene los fundamentos teóricos y los reportes de métricas:
 *   **Indice.md**: Justificación de las estrategias de indexación (B-Tree, Hash, GIN y GiST).
 *   **LogicaSQL.md**: Explicación técnica de la implementación de Window Functions y CTEs Recursivos.
-*   **Reporte_Performance.md**: Análisis de costos y tiempos (EXPLAIN ANALYZE) con capturas de PEV2.
-*   **TAMAÑO INDICES.png**: Captura de pantalla que evidencia el peso físico de los índices en el motor.
+*   **Reporte_Performance.md**: Análisis de costos y tiempos (EXPLAIN ANALYZE) con capturas.
+*   **TAMAÑO INDICES.png**: Captura de pantalla del peso de los índices en el motor.
 
 ####  /MER
 *   **Diagrama Entidad-Relación**: Imagen del modelo de datos normalizado en **3NF**.
