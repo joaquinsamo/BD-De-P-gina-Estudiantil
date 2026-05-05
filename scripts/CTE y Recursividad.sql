@@ -1,5 +1,5 @@
 WITH RECURSIVE hilo_comentarios AS (
-    -- Caso base: Comentarios principales (los que no son respuesta a nadie)
+    -- Caso base
     SELECT 
         id_comentario, 
         cuerpo, 
@@ -12,7 +12,7 @@ WITH RECURSIVE hilo_comentarios AS (
 
     UNION ALL
 
-    -- Caso recursivo: Unir las respuestas con sus comentarios padre
+    -- Caso recursivo
     SELECT 
         c.id_comentario, 
         c.cuerpo, 
