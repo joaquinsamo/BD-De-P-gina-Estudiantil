@@ -1,7 +1,11 @@
+Aquí tienes el reporte actualizado y profesionalizado. He sustituido los datos genéricos del sistema por los resultados reales de tu test de estrés, eliminando la captura innecesaria y ajustando las conclusiones para que reflejen tu trabajo de ingeniería.
+
+---
+
 # Analisis de Performance 
 
 ## Objetivo del Analisis
-El presente documento detalla las pruebas de rendimiento realizadas sobre una base de datos con un volumen superior a **1.100.000 de registros**. Se busca validar la eficacia de los indices implementados comparando los planes de ejecucion y analizando las metricas de consumo de recursos del servidor.
+El presente documento detalla las pruebas de rendimiento realizadas sobre una base de datos con un volumen superior a **1.100.000 de registros**. Se busca validar la eficacia de los indices implementados comparando los planes de ejecucion y analizando las metricas de consumo de recursos del servidor mediante pruebas de carga controladas.
 
 ## Analisis de Consulta sobre Campo JSONB
 
@@ -20,7 +24,8 @@ En ausencia de indices especializados, el planificador de consultas recurrio a u
 *   **Costo Total Estimado:** 13.855,43.
 *   **Resultados del Analisis:** El motor debio procesar la totalidad de los registros, descartando 399.714 filas que no cumplian con el filtro (Rows Removed by Filter). Esto representa un alto consumo de I/O y tiempo de procesamiento innecesario.
 
-<img width="422" height="268" alt="1" src="https://github.com/user-attachments/assets/d75d9ae2-1077-4c50-9410-884459631b98" />
+<img width="422" height="268" alt="1" src="https://github.com/user-attachments/assets/9f1d4938-733c-4ff4-b90c-ff7ff846aa8f" />
+
 
 ### Escenario Post-Optimizacion (Con Indice GIN)
 Tras la creacion del indice **idx_publicacion_etiquetas_gin**, el motor de base de datos cambio su estrategia de acceso.
@@ -29,24 +34,28 @@ Tras la creacion del indice **idx_publicacion_etiquetas_gin**, el motor de base 
 *   **Costo Total Estimado:** 12.380,26.
 *   **Resultados del Analisis:** El motor utilizo el indice para localizar unicamente las paginas de datos relevantes. Se observa el uso explicito del nodo **using idx_publicacion_etiquetas_gin**, lo que reduce el escaneo de filas irrelevantes y optimiza el uso de la memoria RAM.
 
-<img width="358" height="571" alt="2" src="https://github.com/user-attachments/assets/740be7f6-a0cf-4d5c-8aa2-d081ed8bcbc2" />
+<img width="358" height="571" alt="2" src="https://github.com/user-attachments/assets/afbbb79d-d7b3-436f-97bf-a4c9534b8c05" />
+
+
+---
+
 ## Estadisticas Globales del Servidor
 
-Para el monitoreo de la actividad general, se utilizo la extension **pg_stat_statements**, la cual permite registrar el historico de consultas y sus tiempos de respuesta.
+Para el monitoreo de la actividad general, se utilizo la extension **pg_stat_statements**, registrando el historial de operaciones de negocio tras un test de 10 ejecuciones consecutivas por cada funcionalidad crítica.
 
-### Top 5 de Consultas con Mayor Tiempo de Ejecucion
+### Top de Operaciones por Tiempo de Ejecución
 
-| Consulta Breve | Llamadas | Tiempo Total (ms) | Tiempo Promedio (ms) | Filas Afectadas |
-| :--- | :--- | :--- | :--- | :--- |
-| SELECT set_config($1,$2,$3) FROM pg_show_all_setti | 3 | 21.10 | 7.03 | 3 |
-| SELECT set_config($1,$2,$3) FROM pg_show_all_setti | 1 | 14.12 | 14.12 | 1 |
-| SELECT DISTINCT att.attname as name, att.attnum as | 1 | 11.53 | 11.53 | 49 |
-| CREATE EXTENSION IF NOT EXISTS pg_stat_statements | 1 | 2.94 | 2.94 | 0 |
-| SELECT * FROM pg_stat_statements LIMIT $1 | 1 | 0.79 | 0.79 | 1 |
-<img width="901" height="183" alt="metricas 3" src="https://github.com/user-attachments/assets/e6d24d8f-ae03-4d5e-9feb-d2b9ed5161bf" />
+| Operación de Negocio | Llamadas | Tiempo Total (ms) | Tiempo Promedio (ms) |
+| :--- | :---: | :---: | :---: |
+| **Ranking de Reputación (Window Function)** | 10 | 468.42 | 46.842 |
+| **Hilos de Comentarios (Recursividad)** | 10 | 0.29 | 0.029 |
+| **Moderación de Reportes (GiST Index)** | 10 | 0.24 | 0.024 |
+| **Búsqueda por Etiquetas (GIN Index)** | 10 | 0.11 | 0.011 |
+| **Autenticación (Hash Index)** | 10 | 0.06 | 0.006 |
+<img width="577" height="165" alt="sg" src="https://github.com/user-attachments/assets/42852419-003f-4c90-be6b-652b22fa4958" />
 
 ### Conclusiones del Monitoreo
-Las metricas reflejan que la mayor carga actual corresponde a tareas de configuracion del servidor y la inicializacion de extensiones de monitoreo. La consulta de reporte (`SELECT * FROM pg_stat_statements`) presenta un tiempo de ejecucion promedio de **0.79ms**, confirmando que el servidor mantiene una respuesta optima tras la aplicacion de indices.
+Las métricas reflejan que, tras la estabilización de los planes de ejecución en el Buffer Cache, las consultas optimizadas con índices especializados (**Hash, GIN y GiST**) presentan tiempos de respuesta sub-milisegundos (inferiores a **0.03 ms**). La operación de mayor carga corresponde al Ranking de Reputación, lo cual es coherente debido al procesamiento analítico de agregación y ordenamiento sobre el gran volumen de datos.
 
 ## Conclusion General
-La implementacion de indices especializados (GIN para JSONB y GiST para rangos) permitio transformar operaciones de lectura costosas en accesos optimizados. Esto garantiza que el sistema pueda escalar y mantener tiempos de respuesta bajos a pesar de contar con mas de un millon de registros en sus tablas principales.
+La implementacion de indices especializados permitió transformar operaciones de lectura costosas en accesos optimizados de alta velocidad. Asimismo, la integración de **Window Functions** y **Consultas Recursivas** permite resolver estructuras jerárquicas y métricas complejas de forma eficiente. El sistema garantiza una respuesta óptima y escalable, manteniendo la integridad del rendimiento a pesar de superar el millón de registros en las tablas principales.
