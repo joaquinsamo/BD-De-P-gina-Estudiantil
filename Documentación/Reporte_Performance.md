@@ -1,6 +1,3 @@
-Aquí tienes el reporte actualizado y profesionalizado. He sustituido los datos genéricos del sistema por los resultados reales de tu test de estrés, eliminando la captura innecesaria y ajustando las conclusiones para que reflejen tu trabajo de ingeniería.
-
----
 
 # Analisis de Performance 
 
