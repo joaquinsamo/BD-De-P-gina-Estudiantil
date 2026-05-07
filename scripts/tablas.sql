@@ -1,34 +1,23 @@
--- =========================
--- TABLA ROL
--- =========================
 CREATE TABLE rol (
     id_rol SERIAL PRIMARY KEY,
     nombre VARCHAR(50) UNIQUE NOT NULL
 );
 
--- =========================
--- TABLA USUARIO
--- =========================
 CREATE TABLE usuario (
     id_usuario SERIAL PRIMARY KEY,
     nombre_usuario VARCHAR(50) UNIQUE NOT NULL,
     correo VARCHAR(100) UNIQUE NOT NULL,
     contrasena_hash TEXT NOT NULL,
     id_rol INT NOT NULL,
+    periodo_actividad TSRANGE,
     FOREIGN KEY (id_rol) REFERENCES rol(id_rol)
 );
 
--- =========================
--- TABLA CATEGORIA
--- =========================
 CREATE TABLE categoria (
     id_categoria SERIAL PRIMARY KEY,
     nombre VARCHAR(100) UNIQUE NOT NULL
 );
 
--- =========================
--- TABLA PUBLICACION
--- =========================
 CREATE TABLE publicacion (
     id_publicacion SERIAL PRIMARY KEY,
     titulo VARCHAR(200) NOT NULL,
@@ -36,13 +25,11 @@ CREATE TABLE publicacion (
     id_usuario INT NOT NULL,
     id_categoria INT NOT NULL,
     esta_resuelto BOOLEAN DEFAULT FALSE,
+    etiquetas JSONB,
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria)
 );
 
--- =========================
--- TABLA COMENTARIO
--- =========================
 CREATE TABLE comentario (
     id_comentario SERIAL PRIMARY KEY,
     cuerpo TEXT NOT NULL,
@@ -54,9 +41,6 @@ CREATE TABLE comentario (
     FOREIGN KEY (id_comentario_padre) REFERENCES comentario(id_comentario) ON DELETE CASCADE
 );
 
--- =========================
--- VOTOS A PUBLICACIONES
--- =========================
 CREATE TABLE voto_publicacion (
     id_voto SERIAL PRIMARY KEY,
     valor INT CHECK (valor IN (1, -1)) NOT NULL,
@@ -67,9 +51,6 @@ CREATE TABLE voto_publicacion (
     FOREIGN KEY (id_publicacion) REFERENCES publicacion(id_publicacion) ON DELETE CASCADE
 );
 
--- =========================
--- VOTOS A COMENTARIOS
--- =========================
 CREATE TABLE voto_comentario (
     id_voto SERIAL PRIMARY KEY,
     valor INT CHECK (valor IN (1, -1)) NOT NULL,
@@ -80,22 +61,17 @@ CREATE TABLE voto_comentario (
     FOREIGN KEY (id_comentario) REFERENCES comentario(id_comentario) ON DELETE CASCADE
 );
 
--- =========================
--- REPORTES A PUBLICACIONES
--- =========================
 CREATE TABLE reporte_publicacion (
     id_reporte SERIAL PRIMARY KEY,
     motivo TEXT NOT NULL,
     id_usuario INT NOT NULL,
     id_publicacion INT NOT NULL,
+    ventana_revision TSRANGE,
     UNIQUE (id_usuario, id_publicacion),
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     FOREIGN KEY (id_publicacion) REFERENCES publicacion(id_publicacion) ON DELETE CASCADE
 );
 
--- =========================
--- REPORTES A COMENTARIOS
--- =========================
 CREATE TABLE reporte_comentario (
     id_reporte SERIAL PRIMARY KEY,
     motivo TEXT NOT NULL,
@@ -105,4 +81,3 @@ CREATE TABLE reporte_comentario (
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     FOREIGN KEY (id_comentario) REFERENCES comentario(id_comentario) ON DELETE CASCADE
 );
-
