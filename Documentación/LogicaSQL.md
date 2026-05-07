@@ -33,9 +33,9 @@ ORDER BY ranking_usuario ASC;
 | Usuario67968 | user67968@test.com | 16 | 3 |
 | Usuario79970 | user79970@test.com | 16 | 3 |
 | Usuario63654 | user63654@test.com | 15 | 4 |
-| Usuario5551 | user5551@test.com | 14 | 5 |
+| Usuario5551 | user5551@test.com | 13 | 5 |
 
-## 2. Consultas Recursivas (CTE) para Estructuras Jerarquicas
+## 2. Consultas Recursivas ( CTE ) para Estructuras Jerarquicas
 
 Para soportar el sistema de respuestas de la plataforma, se desarrollo una consulta recursiva capaz de reconstruir los hilos de comentarios anidados.
 
