@@ -37,24 +37,24 @@ Marquen con una `X` dentro de los corchetes `[ ]` (ej: `[x]`) las tareas complet
 
 - [x] **1.** Categorizar correctamente la volatilidad de la función (`IMMUTABLE`, `STABLE` o `VOLATILE`) analizando el consumo de CPU.
 
-- [x] **2.** Diseñar el procedimiento almacenado principal para la tarea compleja de negocio.
+- [] **2.** Diseñar el procedimiento almacenado principal para la tarea compleja de negocio.
 
 - [x] **3.** Implementar la robustez de tipos en variables usando `%TYPE`, `%ROWTYPE` o `RECORD` (evitar tipos estáticos).
 
 ###  B. Gestión Avanzada de Transacciones
 
-- [ ] **1.** Asegurar la atomicidad global del procedimiento mediante sentencias explícitas de `COMMIT` y `ROLLBACK`.
+- [] **1.** Asegurar la atomicidad global del procedimiento mediante sentencias explícitas de `COMMIT` y `ROLLBACK`.
 
-- [ ] **2.** Identificar el subproceso secundario propenso a fallas y aislarlo mediante la declaración de un `SAVEPOINT`.
+- [x] **2.** Identificar el subproceso secundario propenso a fallas y aislarlo mediante la declaración de un `SAVEPOINT`.
 
-- [ ] **3.** Implementar la lógica de reversión parcial (`ROLLBACK TO SAVEPOINT`) ante un error controlado.
+- [x] **3.** Implementar la lógica de reversión parcial (`ROLLBACK TO SAVEPOINT`) ante un error controlado.
 
 
 ### C. Capa de Auditoría y Forense de Datos
 
-- [ ] **1.** Crear la tabla física `audit_logs` con los campos necesarios para metadatos del sistema.
+- [x] **1.** Crear la tabla física `audit_logs` con los campos necesarios para metadatos del sistema.
 
-- [ ] **2.** Implementar bloques estructurados `EXCEPTION` en los puntos críticos de los scripts.
+- [x] **2.** Implementar bloques estructurados `EXCEPTION` en los puntos críticos de los scripts.
 
 - [ ] **3.** Utilizar `GET STACKED DIAGNOSTICS` para extraer de forma limpia el `RETURNED_SQLSTATE` y el `MESSAGE_TEXT`.
 
