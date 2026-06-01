@@ -35,11 +35,11 @@ Marquen con una `X` dentro de los corchetes `[ ]` (ej: `[x]`) las tareas complet
 
 ### A. Abstracción y Lógica Procedural
 
-- [ ] **1.** Categorizar correctamente la volatilidad de la función (`IMMUTABLE`, `STABLE` o `VOLATILE`) analizando el consumo de CPU.
+- [x] **1.** Categorizar correctamente la volatilidad de la función (`IMMUTABLE`, `STABLE` o `VOLATILE`) analizando el consumo de CPU.
 
-- [ ] **2.** Diseñar el procedimiento almacenado principal para la tarea compleja de negocio.
+- [x] **2.** Diseñar el procedimiento almacenado principal para la tarea compleja de negocio.
 
-- [ ] **3.** Implementar la robustez de tipos en variables usando `%TYPE`, `%ROWTYPE` o `RECORD` (evitar tipos estáticos).
+- [x] **3.** Implementar la robustez de tipos en variables usando `%TYPE`, `%ROWTYPE` o `RECORD` (evitar tipos estáticos).
 
 
 ###  B. Gestión Avanzada de Transacciones
