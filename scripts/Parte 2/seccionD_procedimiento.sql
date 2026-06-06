@@ -1,5 +1,5 @@
 CREATE OR REPLACE PROCEDURE public.crear_comentario_seguro(
-    p_cuerpo         comentario.cuerpo%TYPE,
+    p_cuerpo          comentario.cuerpo%TYPE,
     p_id_usuario     comentario.id_usuario%TYPE,
     p_id_publicacion comentario.id_publicacion%TYPE,
     p_id_padre       comentario.id_comentario_padre%TYPE
@@ -57,17 +57,9 @@ BEGIN
             VALUES (
                 v_sqlstate,
                 v_msg,
-                'Fallo controlado en subproceso registrar_actividad. '
-                || 'El comentario principal fue insertado correctamente.'
+                'Fallo controlado en subproceso registrar_actividad. El comentario principal fue insertado correctamente.'
             );
     END;
-
-    COMMIT;
-
-EXCEPTION
-    WHEN OTHERS THEN
-        ROLLBACK;
-        RAISE;
 END;
 $$;
 
