@@ -11,68 +11,33 @@ SELECT
     'Usuario' || i,
     'Correo' || i || '@test.com',
     'Contraseña' || i,
-    r.id_rol,
+    (1 + floor(random() * 10))::int,
     tsrange('2020-01-01', '2025-12-31')
-FROM generate_series(1, 100000) AS i
-CROSS JOIN LATERAL (
-    SELECT id_rol FROM rol
-    OFFSET (floor(random() * (SELECT COUNT(*) FROM rol)))::int
-    LIMIT 1
-) AS r;
+FROM generate_series(1, 100000) AS i;
 
 INSERT INTO publicacion (titulo, cuerpo, id_usuario, id_categoria, etiquetas)
 SELECT
-    'Titulo' || i,
+    CASE WHEN random() < 0.1 THEN 'Error crítico detectado ' || i ELSE 'Titulo ' || i END,
     'Cuerpo' || i,
-    u.id_usuario,
-    cat.id_categoria,
+    (1 + floor(random() * 100000))::int,
+    (1 + floor(random() * 10))::int,
     CASE WHEN random() < 0.3 THEN '{"urgente": true}'::jsonb
          WHEN random() < 0.6 THEN '{"importante": true}'::jsonb
          ELSE '{"normal": true}'::jsonb END
-FROM generate_series(1, 500000) AS i
-CROSS JOIN LATERAL (
-    SELECT id_usuario FROM usuario
-    OFFSET (floor(random() * (SELECT COUNT(*) FROM usuario)))::int
-    LIMIT 1
-) AS u
-CROSS JOIN LATERAL (
-    SELECT id_categoria FROM categoria
-    OFFSET (floor(random() * (SELECT COUNT(*) FROM categoria)))::int
-    LIMIT 1
-) AS cat;
+FROM generate_series(1, 500000) AS i;
 
 INSERT INTO comentario (cuerpo, id_publicacion, id_usuario, id_comentario_padre)
 SELECT
     'Comentario' || i,
-    p.id_publicacion,
-    u.id_usuario,
+    (1 + floor(random() * 500000))::int,
+    (1 + floor(random() * 100000))::int,
     NULL
-FROM generate_series(1, 200000) AS i
-CROSS JOIN LATERAL (
-    SELECT id_publicacion FROM publicacion
-    OFFSET (floor(random() * (SELECT COUNT(*) FROM publicacion)))::int
-    LIMIT 1
-) AS p
-CROSS JOIN LATERAL (
-    SELECT id_usuario FROM usuario
-    OFFSET (floor(random() * (SELECT COUNT(*) FROM usuario)))::int
-    LIMIT 1
-) AS u;
+FROM generate_series(1, 200000) AS i;
 
 UPDATE comentario
-SET id_comentario_padre = padre.id_comentario
-FROM (
-    SELECT c.id_comentario AS hijo, p.id_comentario
-    FROM comentario c
-    CROSS JOIN LATERAL (
-        SELECT id_comentario FROM comentario
-        OFFSET (floor(random() * (SELECT COUNT(*) FROM comentario)))::int
-        LIMIT 1
-    ) AS p
-    WHERE random() < 0.3
-      AND c.id_comentario <> p.id_comentario
-) AS padre
-WHERE comentario.id_comentario = padre.hijo;
+SET id_comentario_padre = (1 + floor(random() * 200000))::int
+WHERE random() < 0.3 
+  AND id_comentario <> (1 + floor(random() * 200000))::int;
 
 WITH u AS (
     SELECT id_usuario, ROW_NUMBER() OVER (ORDER BY random()) AS rn
