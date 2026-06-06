@@ -84,9 +84,15 @@ Marquen con una `X` dentro de los corchetes `[ ]` (ej: `[x]`) las tareas complet
 *   **Métricas Globales:** Extensión `pg_stat_statements`.
 *   **Entorno de Desarrollo:** Windows.
 
-## Instalación y Uso
-1. **Esquema:** Ejecutar primero `scripts/parte1/tablas.sql`.
-2. **Poblado:** Ejecutar `scripts/parte1/data-seeding.sql`.
-3. **Optimización:** Aplicar `scripts/parte1/Indices.sql` para notar la mejora en los tiempos de respuesta.
-4. **Análisis:** Los scripts de `/scripts/parte1` pueden ejecutarse de manera independiente para verificar la lógica de negocio.
-5. **Parte 2:** Ejecutar los scripts de `/scripts/parte2` en orden alfabético sobre la base ya poblada.
+### Instalación y Uso
+
+1. **Diseño del Esquema:** Ejecutar en primer lugar el script `scripts/parte1/tablas.sql` para inicializar la estructura base de las tablas y sus restricciones.
+2. **Carga Masiva de Datos:** Ejecutar `scripts/parte1/data-seeding.sql` para poblar el sistema con más de 1.000.000 de registros distribuidos de forma aleatoria y controlada.
+3. **Optimización y Performance:** * Se recomienda ejecutar las consultas complejas en frío para analizar el comportamiento del Query Planner.
+   * Aplicar el script `scripts/parte1/indices.sql` para dar de alta las estrategias de indexación avanzada (B-Tree, Hash, GIN y GiST) y contrastar la mejora mediante EXPLAIN ANALYZE.
+4. **Métricas y SQL Avanzado:** Los queries analíticos correspondientes a Window Functions y CTEs Recursivas (incluidos en la carpeta de la Parte 1) pueden ejecutarse de manera independiente sobre la base ya optimizada.
+5. **Programación en el Servidor (Parte 2):** Los componentes procedurales de la lógica de negocio deben ejecutarse en estricto orden secuencial para respetar las dependencias jerárquicas de los objetos:
+   * `scripts/parte2/seccionA_funcion_score.sql`
+   * `scripts/parte2/seccionBC_auditoria.sql`
+   * `scripts/parte2/seccionD_procedimiento.sql`
+   * `scripts/parte2/seccionE_trigger.sql`
