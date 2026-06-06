@@ -80,4 +80,4 @@ CREATE TABLE reporte_comentario (
     UNIQUE (id_usuario, id_comentario),
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     FOREIGN KEY (id_comentario) REFERENCES comentario(id_comentario) ON DELETE CASCADE
-);
+    );
