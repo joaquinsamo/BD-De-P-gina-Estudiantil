@@ -26,6 +26,7 @@ Scripts SQL para la reproducción total del entorno:
 *   **Indices.sql**: Creación de índices optimizados.
 *   **windows function.sql**: Métricas de ranking y análisis de actividad.
 *   **CTE y Recursividad.sql**: Gestión de hilos de comentarios anidados.
+*   **AgregarColumna.sql**: Agrega la columna Activo a la tabla Publicacion.
 
 *   ## Checklist de Avance - Proyecto Integrador (Parte 2)
 
