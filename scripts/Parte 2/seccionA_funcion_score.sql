@@ -1,29 +1,18 @@
--- Verificación
--- SELECT public.calcular_score_publicacion(1);
-
 CREATE OR REPLACE FUNCTION public.calcular_score_publicacion(
-    p_id_publicacion publicacion.id_publicacion%TYPE   
+    p_id_publicacion publicacion.id_publicacion%TYPE
+)
 RETURNS INTEGER
 LANGUAGE plpgsql
-STABLE                                                  
+STABLE                                                 
 AS $$
 DECLARE
-    v_votos_positivos INTEGER;
-    v_votos_negativos INTEGER;
+    v_score INTEGER;
 BEGIN
-    SELECT COUNT(*)
-    INTO v_votos_positivos
+    SELECT COALESCE(SUM(valor), 0)
+    INTO v_score
     FROM voto_publicacion
-    WHERE id_publicacion = p_id_publicacion
-      AND valor = 1;
+    WHERE id_publicacion = p_id_publicacion;
 
-    SELECT COUNT(*)
-    INTO v_votos_negativos
-    FROM voto_publicacion
-    WHERE id_publicacion = p_id_publicacion
-      AND valor = -1;
-
-    RETURN v_votos_positivos - v_votos_negativos;
+    RETURN v_score;
 END;
 $$;
-
